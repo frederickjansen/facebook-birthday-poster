@@ -14,5 +14,6 @@
   			"js": ["facebook-birthday-poster.js"]
   		}
   	],
-	"options_page": "options.html"
+	"options_page": "options.html",
+	"permissions": ["storage"]
 }
