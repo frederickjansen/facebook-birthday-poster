@@ -9,25 +9,30 @@ setTimeout(function() {
 	if (typeof birthdays !== "undefined" && birthdays.length > 0) {
 		// Loop over them
 		birthdays.forEach(function(form) {
-			// Change the value of the textarea inside the form
-			$("textarea", form).value = getRandomMessage();
-			form.submit();
+			// Chrome storage is asynchronous, so we have to use a callback instead of return
+			getRandomMessage($("textarea", form));
 		});
 	}
 }, 2000);
 
-function getRandomMessage() {
+function getRandomMessage(form) {
 	// Only run if messages haven't been retrieved earlier
 	if (typeof messages === "undefined") {
 		// Get the array of messages from storage
 		chrome.storage.sync.get("messages", function(items) {
-			messages = items;
-			// Return a random message
-			return messages[Math.floor(Math.random() * messages.length)];
+			messages = items.messages;
+			// Submit the form with a random message
+			submitForm(form, messages[Math.floor(Math.random() * messages.length)]);
 		});
 	} else {
-		return messages[Math.floor(Math.random() * messages.length)];
+		submitForm(form, messages[Math.floor(Math.random() * messages.length)]);
 	}
+}
+
+function submitform(form, message) {
+	// Change the value of the textarea inside the form
+	form.value = message;
+	form.submit();
 }
 
 function getBirthdayForms() {
