@@ -10,7 +10,7 @@
   	},
   	"content_scripts": [
   		{
-  			"matches": ["*://*facebook.com"],
+  			"matches": ["*://www.facebook.com/"],
   			"js": ["facebook-birthday-poster.js"]
   		}
   	],

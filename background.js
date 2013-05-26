@@ -1,5 +1,5 @@
 // Save default messages to Chrome's storage
-chrome.runtime.onInstalled.addEventListener(function(details)
+chrome.runtime.onInstalled.addListener(function(details)
 {
 	// Can be install, update and chrome_update
 	switch(details.reason)

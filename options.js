@@ -1,5 +1,5 @@
-// Save options to Chrome's storage
-function saveOptions() {
+// Save settings to Chrome's storage
+function saveSettings() {
 	// Get all messages (with <a>)
 	var messagesAnchor = $$(".birthdayMessage"),
 	messages;
@@ -16,7 +16,7 @@ function saveOptions() {
 	});
 }
 
-function loadOptions() {
+function loadSettings() {
 	
 }
 

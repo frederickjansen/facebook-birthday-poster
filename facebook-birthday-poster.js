@@ -1,19 +1,24 @@
 var messages,
-birthdays = getBirthdayForms();
+birthdays;
 
-// Check if any forms have been found
-if (typeof birthdays !== "undefined" && birthdays.length > 0) {
-	// Loop over them
-	birthdays.forEach(function(form) {
-		// Change the value of the textarea inside the form
-		$("textarea", form).value = getRandomMessage();
-		form.submit();
-	});
-}
+// Two second delay because the birthday box is only generated after Facebook has fully loaded
+setTimeout(function() {
+	birthdays = getBirthdayForms();
+
+	// Check if any forms have been found
+	if (typeof birthdays !== "undefined" && birthdays.length > 0) {
+		// Loop over them
+		birthdays.forEach(function(form) {
+			// Change the value of the textarea inside the form
+			$("textarea", form).value = getRandomMessage();
+			form.submit();
+		});
+	}
+}, 2000);
 
 function getRandomMessage() {
 	// Only run if messages haven't been retrieved earlier
-	if (messages === "undefined") {
+	if (typeof messages === "undefined") {
 		// Get the array of messages from storage
 		chrome.storage.sync.get("messages", function(items) {
 			messages = items;
