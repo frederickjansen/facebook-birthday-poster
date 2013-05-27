@@ -1,14 +1,38 @@
+var msgElement = $("#messages");
+
 loadSettings();
 
-document.addEventListener("click", clickHandler, false);
+// Capture all click events inside of .content so we can mimick jQuery's live()
+$(".content").addEventListener("click", clickHandler, false);
+// Blur event doesn't bubble up, so we capture it
+$(".content").addEventListener("blur", blurHandler, true);
 
 function clickHandler(e) {
 	e.preventDefault();
 
+	// Delete message if delete icon clicked
 	if (e.target.webkitMatchesSelector(".delete")) {
-		deleteMessage(e.target);
+		deleteMessage(e.target.parentElement);
+	// Replace message with input field if clicked directly
 	} else if (e.target.webkitMatchesSelector(".birthdayMessage")) {
+		editMessage(e.target);
+	// Add new input field if the new message button is clicked
+	} else if (e.target.webkitMatchesSelector("#addMessage")) {
+		addMessage();
+	}
+}
 
+// Handle the input field's blur event
+function blurHandler(e) {
+	// If it's the input field
+	if (e.target.webkitMatchesSelector("#inputMessage")) {
+		// Delete the message if empty
+		if (e.target.value === "") {
+			deleteMessage(e.target.parentElement)
+		// Save it otherwise
+		} else {
+			saveMessage(e.target);
+		}
 	}
 }
 
@@ -30,19 +54,44 @@ function saveSettings() {
 	});
 }
 
-function deleteMessage(message) {
-	message.parentElement.parentElement.removeChild(message.parentElement);
+// Delete a message
+function deleteMessage(message, save) {
+	// Start with li -> ul -> remove child li
+	message.parentElement.removeChild(message);
 	saveSettings();
 }
 
+// Add an input field to the list of messages
 function addMessage() {
+	var html = "<li>"
+	html += "<input type=\"text\" autofocus=\"autofocus\" id=\"inputMessage\" placeholder=\"Your message\">"
+	html += "<a href=\"#\" class=\"delete\">delete</a>";
+	html += "</li>"
+	msgElement.insertAdjacentHTML("beforeend", html);
+}
 
+// Turn anchor into input field
+function editMessage(el) {
+	var html = "<input type=\"text\" autofocus=\"autofocus\" id=\"inputMessage\" placeholder=\"Your message\" value=\"" + el.textContent + "\">"
+	// Add input field before anchor
+	el.insertAdjacentHTML("beforebegin", html);
+	// Remove anchor
+	el.parentElement.removeChild(el);
+}
+
+// Turn input field into anchor and save all messages
+function saveMessage(input) {
+	var html = "<a href=\"#\" class=\"birthdayMessage\">" + input.value + "</a>"
+	// Add anchor before input field
+	input.insertAdjacentHTML("beforebegin", html);
+	// Remove input field
+	input.parentElement.removeChild(input);
+	
+	saveSettings();
 }
 
 // Populate list of messages
 function loadSettings() {
-	var msgElement = $("#messages");
-
 	// Get messages from storage
 	chrome.storage.sync.get("messages", function(items) {
 		items.messages.forEach(function(message) {
