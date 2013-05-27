@@ -1,11 +1,14 @@
-var msgElement = $("#messages");
+var msgElement = $("#messages"),
+isSaving = false;
 
 loadSettings();
 
 // Capture all click events inside of .content so we can mimick jQuery's live()
 $(".content").addEventListener("click", clickHandler, false);
-// Blur event doesn't bubble up, so we capture it
-$(".content").addEventListener("blur", blurHandler, true);
+// Focusout event instead of blur, because it bubbles
+$(".content").addEventListener("focusout", blurHandler, false);
+// Capture return as an alternative way of saving
+$(".content").addEventListener("keydown", keydownHandler, false);
 
 function clickHandler(e) {
 	e.preventDefault();
@@ -26,12 +29,34 @@ function clickHandler(e) {
 function blurHandler(e) {
 	// If it's the input field
 	if (e.target.webkitMatchesSelector("#inputMessage")) {
-		// Delete the message if empty
-		if (e.target.value === "") {
-			deleteMessage(e.target.parentElement)
-		// Save it otherwise
-		} else {
-			saveMessage(e.target);
+		// Don't try to save if keyboard has triggered already
+		if (!isSaving) {
+			// Delete the message if empty
+			if (e.target.value === "") {
+				deleteMessage(e.target.parentElement)
+			// Save it otherwise
+			} else {
+				saveMessage(e.target);
+			}
+		}
+	}
+}
+
+// Handle the input field's keydown event
+function keydownHandler(e) {
+	// Return key
+	if (e.keyCode === 13) {
+		if (e.target.webkitMatchesSelector("#inputMessage")) {
+			// We don't want focusout to try and delete this item again
+			isSaving = true;
+			// Delete the message if empty
+			if (e.target.value === "") {
+				deleteMessage(e.target.parentElement)
+			// Save it otherwise
+			} else {
+				saveMessage(e.target);
+			}
+			isSaving = false;
 		}
 	}
 }

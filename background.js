@@ -19,6 +19,6 @@ function saveInitialMessages() {
 			"Happy bday!! xoxo"
 		]
 	}, function() {
-		console.log("Settings saved init");
+		//console.log("Settings saved init");
 	});
 }
