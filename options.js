@@ -1,5 +1,17 @@
 loadSettings();
 
+document.addEventListener("click", clickHandler, false);
+
+function clickHandler(e) {
+	e.preventDefault();
+
+	if (e.target.webkitMatchesSelector(".delete")) {
+		deleteMessage(e.target);
+	} else if (e.target.webkitMatchesSelector(".birthdayMessage")) {
+
+	}
+}
+
 // Save settings to Chrome's storage
 function saveSettings() {
 	// Get all messages (with <a>)
@@ -16,6 +28,15 @@ function saveSettings() {
 	chrome.storage.sync.set({"messages": messages}, function() {
 		console.log("Settings saved");
 	});
+}
+
+function deleteMessage(message) {
+	message.parentElement.parentElement.removeChild(message.parentElement);
+	saveSettings();
+}
+
+function addMessage() {
+
 }
 
 // Populate list of messages
