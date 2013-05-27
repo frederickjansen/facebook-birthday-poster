@@ -235,8 +235,8 @@ ul.menu li a {
   background-repeat: no-repeat;
   display: block;
   opacity: 0;
-  height: 14px;
-  width: 14px;
+  height: 10px;
+  width: 10px;
   -webkit-transition: 150ms opacity;
   background-color: transparent;
   text-indent: -5000px;
@@ -249,7 +249,7 @@ ul.menu li a {
 ============================================== */
 .highlightable li {
   position: relative;
-  padding: 2px 0;
+  padding: 3px 0;
 }
 .highlightable li:hover > a:not(.action),
 .highlightable li a:not(.action):focus {
@@ -301,7 +301,7 @@ ul.menu li a {
 }
 .highlightable.editable .delete {
   position: absolute;
-  top: 7px;
+  top: 8px;
   right: 5px;
 }
 .highlightable.editable li:hover > .delete {
