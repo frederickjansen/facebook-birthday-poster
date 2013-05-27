@@ -15,24 +15,27 @@ setTimeout(function() {
 	}
 }, 2000);
 
-function getRandomMessage(form) {
+function getRandomMessage(textarea) {
 	// Only run if messages haven't been retrieved earlier
 	if (typeof messages === "undefined") {
 		// Get the array of messages from storage
 		chrome.storage.sync.get("messages", function(items) {
 			messages = items.messages;
 			// Submit the form with a random message
-			submitForm(form, messages[Math.floor(Math.random() * messages.length)]);
+			submitForm(textarea, messages[Math.floor(Math.random() * messages.length)]);
 		});
 	} else {
-		submitForm(form, messages[Math.floor(Math.random() * messages.length)]);
+		submitForm(textarea, messages[Math.floor(Math.random() * messages.length)]);
 	}
 }
 
-function submitform(form, message) {
+// We don't submit the form itself, since that breaks ajax
+// Instead we simulate a return on the textarea and let Facebook handle the rest
+function submitform(textarea, message) {
 	// Change the value of the textarea inside the form
-	form.value = message;
-	form.submit();
+	textarea.value = message;
+	// Trigger a return keyboard event on the textarea inside the form
+	triggerKeyboardEvent(textarea, 13);
 }
 
 function getBirthdayForms() {
@@ -41,21 +44,15 @@ function getBirthdayForms() {
 	return elements;
 }
 
-/*function shouldRun() {
-	// Get current seconds since 1970
-	var curDate = new Date().getTime() / 1000;
-	// Last time run, in seconds since 1970
-	var lastRun = chrome.storage.sync.get("lastRun");
+// Calling submit() on a form breaks ajax, so we simulate a return keypress and let the website handle the rest
+function triggerKeyboardEvent(element, keyCode) {
+	var eventObj = new CustomEvent("keydown", {
+		"keyCode": keyCode,
+		"which": keyCode
+	});
 
-	// Run if more than one day has passed
-	if ((curDate - lastRun) / 3600 > 24) {
-		return true;
-	} else if () {
-
-	} else {
-		return false;
-	}
-}*/
+	element.dispatchEvent(eventObj);
+}
 
 // Select first occurence
 function $(selector, context) {
