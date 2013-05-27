@@ -16,7 +16,7 @@ function saveInitialMessages() {
 	chrome.storage.sync.set({
 		"messages": [
 			"Happy birthday! xx",
-			"Happy bday, hope you have a good one! x"
+			"Happy bday!! xoxo"
 		]
 	}, function() {
 		console.log("Settings saved init");

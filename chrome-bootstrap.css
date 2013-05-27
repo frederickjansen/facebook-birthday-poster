@@ -238,7 +238,7 @@ ul.menu li a {
   height: 10px;
   width: 10px;
   -webkit-transition: 150ms opacity;
-  background-color: transparent;
+  background-color: transparent !important;
   text-indent: -5000px;
   position: absolute;
 }
@@ -408,6 +408,7 @@ input[type='search'] {
   min-height: 2em;
   padding: 3px;
   padding-bottom: 4px;
+  width: 250px;
 }
 .radio,
 .checkbox {
