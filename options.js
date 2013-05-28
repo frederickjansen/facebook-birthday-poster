@@ -75,7 +75,7 @@ function saveSettings() {
 
 	// Save them
 	chrome.storage.sync.set({"messages": messages}, function() {
-		console.log("Settings saved");
+		//console.log("Settings saved");
 	});
 }
 
