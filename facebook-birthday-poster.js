@@ -1,7 +1,5 @@
 var messages,
-birthdays,
-container,
-injected = false;
+birthdays;
 
 // Five second delay because the birthday box is only generated after Facebook has fully loaded
 // Two seconds is usually enough, but apparently not always
