@@ -1,6 +1,6 @@
 {
 	"name": "Facebook Birthday Poster",
-	"version": "0.1",
+	"version": "1.0",
 	"manifest_version": 2,
 	"minimum_chrome_version": "22.0",
 	"description": "An automated poster of generic birthday wishes.",
