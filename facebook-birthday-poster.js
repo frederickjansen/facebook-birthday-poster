@@ -14,7 +14,7 @@ setTimeout(function() {
 		});
 		// Hide the birthdays after we're done
 		// TODO: Replace the textarea with a message saying you've responded to the birthday
-		$("#birthday_reminders_link").classList.add("hidden_elem");
+		//$("#birthday_reminders_link").classList.add("hidden_elem");
 	}
 }, 5000);
 
@@ -36,10 +36,31 @@ function getRandomMessage(textarea, form) {
 function submitForm(textarea, form, message) {
 	// Change the value of the textarea inside the form
 	textarea.value = message;
+
+	var segments = []
+
+	for (var i = 0, length = form.elements.length; i < length; i++) {
+		var field = form.elements[i];
+		// Skip fields without a name
+		if (!field.hasAttribute["name"]) {
+			continue;
+		}
+		segments.push(field.name + "=" + field.value);
+	}
+
 	// The xhr request
 	var oReq = new XMLHttpRequest();
+	oReq.onload = submitFormSuccess;
 	oReq.open("POST", form.action, true);
-	oReq.send(new FormData(form));
+	oReq.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	oReq.send(segments.join("&"));
+	//oReq.open("POST", form.action, true);
+	//oReq.send(new FormData(form));
+
+}
+
+function submitFormSuccess(e) {
+	alert(e.responseText);
 }
 
 function getBirthdayForms() {
